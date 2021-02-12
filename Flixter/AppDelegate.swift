@@ -3,7 +3,7 @@
 //  Flixter
 //
 //  Created by Manny Reyes on 2/5/21.
-//
+/// runs right AS THE APPLICATION GETS STARTED
 
 import UIKit
 
