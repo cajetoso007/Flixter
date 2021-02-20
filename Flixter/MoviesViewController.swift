@@ -6,6 +6,8 @@
 //
 
 import UIKit
+//import AlamofireImage
+
 
 class MoviesViewController: UIViewController, UITableViewDataSource,UITableViewDelegate {
     
@@ -60,25 +62,45 @@ class MoviesViewController: UIViewController, UITableViewDataSource,UITableViewD
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     
-        let cell = UITableViewCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell") as! MovieCell
         //cell.textLabel!.text = "row: \(indexPath.row)"
         let movie = movies[indexPath.row]
         let title = movie["title"] as! String // casting to String
-        
+        let synopsis = movie["overview"] as! String
         //chNGE the references to title
-        cell.textLabel!.text = title
+        //cell.textLabel?.text = title
+        cell.titleLabel.text = title
+        cell.synopsisLabel.text = synopsis
         
+        let baseUrl = "https://image.tmbd.org/t/p/w185"
+        let posterPath = movie["poster_path"] as! String
+        let posterUrl = URL(string: baseUrl + posterPath)
+        
+        
+        //pod was not installed for some reason
+        //cell.posterView.af_setImage(withURL: posterUrl!)
         return cell
     }
 
-    /*
+    
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         // Get the new view controller using segue.destination.
         // Pass the selected object to the new view controller.
+        
+        //need to do two tasks> 1.) find the selected movie
+        let cell = sender as! UITableViewCell
+        let indexPath = tableView.indexPath(for: cell)!
+        let movie = movies[indexPath.row]
+                                //2.) pass the selected moview to the details view controller
+        
+        let detailsViewController = segue.destination as! MovieDetailsViewController
+        detailsViewController.movie = movie
+        tableView.deselectRow(at: indexPath, animated: true)
+        
     }
-    */
+    
 
 }
